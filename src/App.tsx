@@ -17,7 +17,7 @@ const GET_LESSONS_QUERY = gql`
 `;
 
 function App() {
-  const { data } = useQuery(GET_LESSONS_QUERY);
+  const { data } = useQuery<{lessons: iLesson[]}>(GET_LESSONS_QUERY);
 
   console.log(data);
 
@@ -33,8 +33,8 @@ function App() {
 
   return (
     <ul>
-      {data?.lessons.map((lesson: iLesson) => {
-        return <li>{lesson.title}</li>;
+      {data?.lessons.map((lesson) => {
+        return <li key={lesson.id}>{lesson.title}</li>;
       })}
     </ul>
   );
