@@ -21,7 +21,7 @@ function App() {
 
   console.log(data);
 
-  // useEffect(() => {
+  // useEffect(() => {                     //useQuery é uma alternativa menor
   //   client
   //     .query({
   //       query: GET_LESSONS_QUERY,
