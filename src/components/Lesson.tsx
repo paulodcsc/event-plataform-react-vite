@@ -19,7 +19,7 @@ export function Lesson(props: LessonProps) {
 
   return (
     <a href="">
-      <span className="text-gray-300">{avaiableDateFormatted}</span>
+      <span className="text-gray-300 capitalize-first">{avaiableDateFormatted}</span>
       <div className="rounded border border-gray-500 p-4 mt-2">
         <header className="flex items-center justify-between">
           {isLessonAvailable ? (
