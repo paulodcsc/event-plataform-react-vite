@@ -1,3 +1,4 @@
+import { DefaultUi, Player, Youtube } from "@vime/react";
 import {
   CaretRight,
   DiscordLogo,
@@ -5,11 +6,18 @@ import {
   Lightning,
 } from "phosphor-react";
 
-export function Player() {
+import "@vime/core/themes/default.css"
+
+export function Video() {
   return (
     <div className="flex-1">
       <div className="flex bg-black  justify-center">
-        <div className="h-full w-full max-w-[1100px] max-h[60vh] aspect-video bg-rose-900"></div>
+        <div className="h-full w-full max-w-[1100px] max-h[60vh] aspect-video bg-rose-900">
+          <Player>
+            <Youtube videoId={"a6fVysSPejE"} />
+            <DefaultUi />
+          </Player>
+        </div>
       </div>
       <div className="p-8 max-w-[1100px] mx-auto">
         <div className="flex items-start gap-16">
@@ -65,7 +73,7 @@ export function Player() {
           >
             <div className="bg-green-700 h-full p-6 flex items-center">
               {" "}
-              <FileArrowDown size={40} />{" "}
+              <FileArrowDown size={40} />
             </div>
             <div className="py-6 leading-relaxed">
               <strong className="text-2xl">Material complementar</strong>
@@ -89,8 +97,7 @@ export function Player() {
             <div className="py-6 leading-relaxed">
               <strong className="text-2xl">Wallpapers exclusivos</strong>
               <p className="text-sm text-gray-200 mt-2">
-                Acesse o material complementar para acelerar o seu
-                desenvolvimento
+                Baixe wallpapers do programa e personlize a sua máquina
               </p>
             </div>
             <div className="h-full p-6 flex items-center">
