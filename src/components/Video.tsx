@@ -1,4 +1,5 @@
 import { DefaultUi, Player, Youtube } from "@vime/react";
+import { gql, useQuery } from "@apollo/client";
 import {
   CaretRight,
   DiscordLogo,
@@ -6,15 +7,60 @@ import {
   Lightning,
 } from "phosphor-react";
 
-import "@vime/core/themes/default.css"
+import "@vime/core/themes/default.css";
 
-export function Video() {
+const GET_LESSONS_BY_SLUG_QUERY = gql`
+  query GetLessonBySlug($slug: String) {
+    lesson(where: { slug: $slug }) {
+      title
+      videoId
+      description
+      teacher {
+        avatarURL
+        bio
+        name
+      }
+    }
+  }
+`;
+
+interface GetLessonsBySlugQueryResponse {
+  lesson: {
+    title: string;
+    videoId: string;
+    description: string;
+    teacher: {
+      bio: string;
+      avatarURL: string;
+      name: string;
+    };
+  };
+}
+
+interface VideoProps {
+  lessonSlug: string;
+}
+
+export function Video(props: VideoProps) {
+  const { data } = useQuery<GetLessonsBySlugQueryResponse>(
+    GET_LESSONS_BY_SLUG_QUERY,
+    {
+      variables: {
+        slug: props.lessonSlug,
+      },
+    }
+  );
+
+  if (!data) {
+    return <p className="flex-1">Carregando...</p>;
+  }
+
   return (
     <div className="flex-1">
       <div className="flex bg-black  justify-center">
-        <div className="h-full w-full max-w-[1100px] max-h[60vh] aspect-video bg-rose-900">
+        <div className="h-full w-full max-w-[1100px] max-h[60vh] aspect-video bg-black">
           <Player>
-            <Youtube videoId={"a6fVysSPejE"} />
+            <Youtube videoId={data.lesson.videoId} />
             <DefaultUi />
           </Player>
         </div>
@@ -22,29 +68,23 @@ export function Video() {
       <div className="p-8 max-w-[1100px] mx-auto">
         <div className="flex items-start gap-16">
           <div className="flex-1">
-            <h1 className="text-2xl font-bold">Vídeo 01</h1>
+            <h1 className="text-2xl font-bold">{data.lesson.title}</h1>
             <p className="mt-4 text-gray-200 leading-relaxed">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-              reprehenderit in voluptate velit esse cillum dolore eu fugiat
-              nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-              sunt in culpa qui officia deserunt mollit anim id est laborum.
+              {data.lesson.description}
             </p>
 
             <div className="flex items-center gap-4 mt-6">
               <img
                 className="h-16 w-16 rounded-full border-2 border-blue-500"
-                src="https://github.com/paulodcsc.png"
+                src={data.lesson.teacher.avatarURL}
                 alt="Profile picture"
               />
               <div className="leading-relaxed">
                 <strong className="font-bold text-2xl block">
-                  Paulo Capelo
+                  {data.lesson.teacher.name}
                 </strong>
                 <span className="text-gray-200 text-sm block">
-                  Dev at Vortex
+                  {data.lesson.teacher.bio}
                 </span>
               </div>
             </div>
